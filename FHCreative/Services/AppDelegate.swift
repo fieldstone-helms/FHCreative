@@ -7,14 +7,31 @@
 //
 
 import UIKit
+import Firebase
+import GoogleSignIn
+import FirebaseCore
+import FirebaseFirestore
+
+var newUser = false
+var db: Firestore!
+var profileStatus = 0
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        FirebaseApp.configure()
+        GIDSignIn.sharedInstance()?.clientID = FirebaseApp.app()?.options.clientID
+        GIDSignIn.sharedInstance()?.delegate = self as? GIDSignInDelegate
+        
+        // [START setup]
+             let settings = FirestoreSettings()
+             Firestore.firestore().settings = settings
+             // [END setup]
+             db = Firestore.firestore()
+        
+        // You need to adopt a FUIAuthDelegate protocol to receive callback
         return true
     }
 
