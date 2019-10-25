@@ -127,7 +127,7 @@ class SessionStore : ObservableObject {
         })
     }
     
-    func getData(collectionReference: String, documentReference: String) {
+    func snapToArray(collectionReference: String, documentReference: String) {
         // [START get_collection]
         let user = session?.uid
         let userData = db.collection(collectionReference).document(documentReference)
