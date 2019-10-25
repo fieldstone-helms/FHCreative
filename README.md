@@ -1,2 +1,0 @@
-# FHCreative
-Creative freelance app
