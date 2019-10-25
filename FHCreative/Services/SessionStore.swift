@@ -105,9 +105,7 @@ class SessionStore : ObservableObject {
         // [START get_collection]
         let user = session?.uid
         let userData = db.collection(collectionReference).document(documentReference)
-        userData.addSnapshotListener(includeMetadataChanges: <#T##Bool#>) { (<#DocumentSnapshot?#>, <#Error?#>) in
-            <#code#>
-        }
+    
         userData.addSnapshotListener(includeMetadataChanges: true, listener: { (snapshot, error) in
             if let snapshot = snapshot {
                 self.profile = UserProfile(
@@ -128,28 +126,22 @@ class SessionStore : ObservableObject {
     }
     
     func snapToArray(collectionReference: String, documentReference: String) {
+        
+        var snapshotArray = [String:Any]()
+        
         // [START get_collection]
-        let user = session?.uid
         let userData = db.collection(collectionReference).document(documentReference)
-        userData.addSnapshotListener(includeMetadataChanges: <#T##Bool#>) { (<#DocumentSnapshot?#>, <#Error?#>) in
-            <#code#>
-        }
-        userData.addSnapshotListener(includeMetadataChanges: true, listener: { (snapshot, error) in
-            if let snapshot = snapshot {
-                self.profile = UserProfile(
-                    userID: user!,
-                    firstname: snapshot.get("firstname") as? String ?? "",
-                    lastname: snapshot.get("lastname") as? String ?? "",
-                    cellphone: snapshot.get("cellphone") as? String ?? "",
-                    dateOfBirth: snapshot.get("dateOfBirth") as? Double ?? 0,
-                    town: snapshot.get("town") as? String ?? "",
-                    country: snapshot.get("country") as? String ?? "",
-                    ratePerHour: snapshot.get("ratePerHour") as? Double ?? 0,
-                    userType: snapshot.get("userType") as? String ?? "",
-                    rating: snapshot.get("rating") as? Int ?? 0,
-                    company: snapshot.get("company") as? String ?? ""
-                )
+        
+        userData.addSnapshotListener(includeMetadataChanges: true) { (snapshot, error) in
+            if error == nil {
+                //Convert Snap to Array
+                for document in snapshot!.data()! {
+                    snapshotArray[document.key] = document.value
+                }
+                print(snapshotArray)
+            } else {
+                print("Error creating snapshotArray: \(String(describing: error))")
             }
-        })
+        }
     }
 }
