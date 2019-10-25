@@ -10,14 +10,14 @@
 import Foundation
 
 struct Company: Codable {
-    let addedByID : String //Foreign key to users
-    let companyLogo : URL
-    let companyName : String
-    let companyTel : Int
-    let companyEmail: String
-    let companyTown : String
-    let companyCity : String
-    let companyCountry : String
+    var addedByID : String //Foreign key to users
+    var companyLogo : URL
+    var companyName : String
+    var companyTel : Int
+    var companyEmail: String
+    var companyTown : String
+    var companyCity : String
+    var companyCountry : String
     
     init(addedByID : String, companyLogo : URL, companyName : String, companyTel : Int, companyEmail: String, companyTown : String, companyCity : String, companyCountry : String){
         self.addedByID =  addedByID
