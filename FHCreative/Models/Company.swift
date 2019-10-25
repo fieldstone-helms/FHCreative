@@ -10,7 +10,7 @@
 import Foundation
 
 struct Company: Codable {
-    var addedByID : String //Foreign key to users
+    var addedByID : String //Foreign key to users//
     var companyLogo : URL
     var companyName : String
     var companyTel : Int
