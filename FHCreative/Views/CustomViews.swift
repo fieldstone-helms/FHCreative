@@ -19,16 +19,17 @@ func Background (startColor: Color, endColor: Color) -> some View {
     }
 }
 
-func BlueButton(buttonLabel: String) -> some View {
+func BlueButton(buttonLabel: String, condition: Bool) -> some View {
     Text(buttonLabel)
         .font(.body)
         .foregroundColor(.white)
         .multilineTextAlignment(.center)
         .frame(width: 200, height: 50, alignment: .center)
-        .background(Color("FHBabyBlue"))
+        .background(condition ? Color.gray : Color.blue )
         .cornerRadius(30)
         .padding(10)
 }
+
 
 func checkBoxImage(for state: Bool) -> Image {
     return state ? Image(systemName: "rectangle") : Image(systemName: "checkmark.rectangle")

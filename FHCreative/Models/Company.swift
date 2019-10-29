@@ -10,23 +10,21 @@
 import Foundation
 
 struct Company: Codable {
-    var addedByID : String //Foreign key to users//
-    var companyLogo : URL
+    var addedOnDate : Double
     var companyName : String
-    var companyTel : Int
+    var companyTel : String
     var companyEmail: String
     var companyTown : String
     var companyCity : String
     var companyCountry : String
     
-    init(addedByID : String, companyLogo : URL, companyName : String, companyTel : Int, companyEmail: String, companyTown : String, companyCity : String, companyCountry : String){
-        self.addedByID =  addedByID
-        self.companyLogo = companyLogo
+    init(companyLogo : String, companyName : String, companyTel : String, companyEmail: String, companyTown : String, companyCity : String, companyCountry : String, addedOnDate: Double){
         self.companyName = companyName
         self.companyTel = companyTel
         self.companyEmail = companyEmail
         self.companyTown = companyTown
         self.companyCity = companyCity
         self.companyCountry = companyCountry
+        self.addedOnDate  = addedOnDate
     }
 }

@@ -11,6 +11,9 @@ import SwiftUI
 struct OnboardingView: View {
     
     @State var currentPageIndex = 0
+    @State var showProfile = false
+    
+    @EnvironmentObject var session : SessionStore
     
     var subView = [
         UIHostingController(rootView: OnboardingSubview(imageString: "OnboardingOne", titleString: "Create account and \n add profile")),
@@ -26,49 +29,54 @@ struct OnboardingView: View {
     
     var body: some View {
         
-        ZStack {
-            PageViewController(viewControllers: subView, currentPageIndex: $currentPageIndex)
-                .edgesIgnoringSafeArea(.all)
+        NavigationView {
             
-            VStack() {
-                HStack {
-                    FHIconType(imageType: "light")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 50)
-                        .padding(40)
-                    
-                    Spacer()
-                }
+            ZStack {
                 
-                Spacer()
+                PageViewController(viewControllers: subView, currentPageIndex: $currentPageIndex).edgesIgnoringSafeArea(.all)
                 
-                Text(caption[currentPageIndex])
-                    .font(.body)
-                    .fontWeight(.light)
-                    .foregroundColor(Color.white)
-                    .multilineTextAlignment(.leading)
-                    .frame(height: 200.0)
-                    .padding()
-                    .fixedSize(horizontal: false, vertical: true)
-                
-                HStack {
-                    PageControl(numberOfPages: subView.count, currentPageIndex: $currentPageIndex)
+                VStack() {
                     
-                    Spacer()
-                    
-                    Button(action: {
-                        if self.currentPageIndex + 1 == self.subView.count {
-                            self.currentPageIndex = 0
-                        } else {
-                            self.currentPageIndex += 1
+                    HStack {
+                        
+                        FHIconType(imageType: "light").resizable().aspectRatio(contentMode: .fit).frame(width: 50).padding(40)
+                        
+                        Spacer()
+                        
+                        NavigationLink(destination: AppView(), isActive: self.$showProfile) {
+                            Image(systemName: "house").foregroundColor(.white).font(.title)
                         }
-                    }) {
-                        ButtonContent()
+                        
+                    }
+                    
+                    Spacer()
+                    
+                    VStack {
+                        
+                        Text(caption[currentPageIndex]) .font(.body).fontWeight(.light).foregroundColor(Color.white).multilineTextAlignment(.leading).frame(width:340)
+                        
+                        HStack {
+                            PageControl(numberOfPages: subView.count, currentPageIndex: $currentPageIndex)
+                            
+                            Spacer()
+                            
+                            Button(action: {
+                                
+                                if self.currentPageIndex + 1 == self.subView.count {
+                                    self.showProfile = true
+                                    //self.currentPageIndex = 0
+                                } else {
+                                    self.currentPageIndex += 1
+                                }
+                            }) {
+                                ButtonContent()
+                            }
+                        }.padding(40)
                     }
                 }
-                .padding(40)
             }
+                .navigationBarTitle(Text("")) // Add this line
+                .navigationBarHidden(true)
         }
     }
 }

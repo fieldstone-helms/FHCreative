@@ -28,6 +28,10 @@ struct mySignupView: View {
     
     @EnvironmentObject var session: SessionStore
     
+    func isEnabled ()-> Bool {
+        return !email.isEmpty && !password.isEmpty && password.count > 7
+    }
+    
     func signUp () {
         print("sign me up")
         loading = true
@@ -42,6 +46,10 @@ struct mySignupView: View {
                 self.email = ""
                 self.password = ""
                 self.message = "Signup Successful"
+                
+                //Set defaults
+                defaults.set(true, forKey: "newUser")
+                defaults.set(false, forKey: "hasProfile")
             }
         }
     }
@@ -55,7 +63,7 @@ struct mySignupView: View {
                 CustomTextField(systemImageName: "envelope", textLabel: "email", inputText: $email)
                 CustomPasswordField(systemImageName: "lock", textLabel: "password", inputText: $password)
                 if (error) { Text("\(message)").font(.caption).foregroundColor(.white) }
-                Button(action: signUp) { BlueButton(buttonLabel: "Sign up") }
+                Button(action: signUp) { BlueButton(buttonLabel: "Sign up", condition: isEnabled() ) }
                 
                 VStack {
                     Text("By signing up to FH, your're agreeing").font(.footnote).foregroundColor(.white)
@@ -82,6 +90,10 @@ struct mySigninView: View {
     
     @EnvironmentObject var session: SessionStore
     
+    func isEnabled ()-> Bool {
+        return !email.isEmpty && !password.isEmpty && password.count > 7
+    }
+    
     func signIn () {
         loading = true
         error = false
@@ -107,7 +119,7 @@ struct mySigninView: View {
                 CustomTextField(systemImageName: "lock", textLabel: "password", inputText: $password)
                 Button(action: signIn) {
                     VStack {
-                        BlueButton(buttonLabel: "Sign in")
+                        BlueButton(buttonLabel: "Sign in", condition: isEnabled())
                         Text("\(message)")
                             .font(.caption).foregroundColor(.white).lineLimit(2).padding()
                     }
@@ -168,7 +180,7 @@ struct myLandingView: View {
     func getUser () {
         session.listen()
     }
-            
+    
     var body: some View {
         ZStack {
             Background(startColor: Color("FHCoral"), endColor: Color("FHBabyBlue"))
@@ -200,6 +212,10 @@ struct mySignupResetPasswordView: View {
     @State private var emailText: String = ""
     @State private var passwordText: String = ""
     
+    func isEnabled ()-> Bool {
+           return !emailText.isEmpty && !passwordText.isEmpty && passwordText.count > 6
+       }
+    
     var body: some View {
         ZStack {
             Background(startColor: Color("FHBabyBlue"), endColor: Color("FHCoral"))
@@ -221,7 +237,7 @@ struct mySignupResetPasswordView: View {
                 Button(action: {
                     
                 } ) {
-                    BlueButton(buttonLabel: "Sign up")
+                    BlueButton(buttonLabel: "Sign up", condition: isEnabled())
                 }
                 Spacer()
                 

@@ -12,6 +12,10 @@ struct ContentView : View {
     
     @EnvironmentObject var session: SessionStore
     
+    var newUser = defaults.bool(forKey: "newUser")
+    var hasProfile = defaults.bool(forKey: "hasProfile")
+    @State var profileView = 3
+        
     var something : String = ""
     
     func getUser () {
@@ -19,10 +23,13 @@ struct ContentView : View {
     }
     
     var body: some View {
+        
         Group {
             if (session.session != nil) {
                 if newUser == true {
                     OnboardingView()
+                } else if hasProfile == false {
+                    ProfileView()
                 } else {
                     AppView()
                 }

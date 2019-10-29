@@ -12,9 +12,9 @@ import GoogleSignIn
 import FirebaseCore
 import FirebaseFirestore
 
-var newUser = false
 var db: Firestore!
 var profileStatus = 0
+let defaults = UserDefaults.standard
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

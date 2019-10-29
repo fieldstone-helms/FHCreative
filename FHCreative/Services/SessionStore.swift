@@ -18,6 +18,11 @@ class SessionStore : ObservableObject {
     var didChange = PassthroughSubject<SessionStore, Never>()
     @Published var session : User? { didSet { self.didChange.send(self) }}
     @Published var profile : UserProfile? { didSet { self.didChange.send(self) }}
+    @Published var company : Company? { didSet { self.didChange.send(self) }}
+    
+    //@Published var newUser = defaults.bool(forKey: "newUser")
+   // @Published var hasProfile = defaults.bool(forKey: "hasProfile")
+    
     var handle: AuthStateDidChangeListenerHandle?
     
     func listen () {
@@ -31,7 +36,9 @@ class SessionStore : ObservableObject {
                     displayName: user.displayName,
                     email: user.email
                 )
-                self.getData(collectionReference: "users", documentReference: user.uid)
+                self.getProfile(collectionReference: "users", documentReference: user.uid)
+                self.getCompany(collectionReference: "company", documentReference: user.uid)
+                
                 print(user.uid, user.displayName as Any, user.email as Any)
             } else {
                 // if we don't have a user, set our session to nil
@@ -47,6 +54,7 @@ class SessionStore : ObservableObject {
         handler: @escaping AuthDataResultCallback
     ) {
         Auth.auth().createUser(withEmail: email, password: password, completion: handler)
+        
     }
     
     func signIn(
@@ -84,7 +92,6 @@ class SessionStore : ObservableObject {
                     print("Error adding document: \(err)")
                 } else {
                     print("Document added with ID: \(ref!.documentID)")
-                    self.getData(collectionReference: collectionReference, documentReference: documentReference!)
                 }
             }
         } else {
@@ -94,18 +101,17 @@ class SessionStore : ObservableObject {
                     print("Error writing document: \(err)")
                 } else {
                     print("Document successfully written!")
-                    self.getData(collectionReference: collectionReference, documentReference: documentReference!)
                 }
             }
             // [END set_document]
         }
     }
     
-    func getData(collectionReference: String, documentReference: String) {
+    func getProfile(collectionReference: String, documentReference: String) {
         // [START get_collection]
         let user = session?.uid
         let userData = db.collection(collectionReference).document(documentReference)
-    
+        
         userData.addSnapshotListener(includeMetadataChanges: true, listener: { (snapshot, error) in
             if let snapshot = snapshot {
                 self.profile = UserProfile(
@@ -125,20 +131,51 @@ class SessionStore : ObservableObject {
         })
     }
     
-    func snapToArray(collectionReference: String, documentReference: String) {
-        
-        var snapshotArray = [String:Any]()
-        
+    func getCompany(collectionReference: String, documentReference: String) {
         // [START get_collection]
-        let userData = db.collection(collectionReference).document(documentReference)
+
+        let companyData = db.collection(collectionReference).document(documentReference)
         
+        companyData.addSnapshotListener(includeMetadataChanges: true, listener: { (snapshot, error) in
+            if let snapshot = snapshot {
+                self.company = Company(
+                    companyLogo: snapshot.get("companyLogo") as? String ?? "",
+                    companyName: snapshot.get("companyName: String") as? String ?? "",
+                    companyTel: snapshot.get("companyTel: String") as? String ?? "",
+                    companyEmail: snapshot.get("companyEmail: String") as? String ?? "",
+                    companyTown: snapshot.get("companyTown: String") as? String ?? "",
+                    companyCity: snapshot.get("companyCity: String") as? String ?? "",
+                    companyCountry: snapshot.get("companyCountry: String") as? String ?? "",
+                    addedOnDate: snapshot.get("addedOnDate: Double") as? Double ?? 0
+                )
+                
+                print("Snapshot: \(String(describing: snapshot.data()))")
+
+            } else {
+                print("Error: \(String(describing: error))")
+            }
+        })
+    }
+    
+    func snapToArray(collectionReference: String, documentReference: String?){
+
+        var snapshotArray = [String:Any]()
+
+        // [START get_collection]
+        let userData = db.collection(collectionReference).document(documentReference!)
+
         userData.addSnapshotListener(includeMetadataChanges: true) { (snapshot, error) in
             if error == nil {
                 //Convert Snap to Array
                 for document in snapshot!.data()! {
                     snapshotArray[document.key] = document.value
                 }
-                print(snapshotArray)
+                print("Array: \(snapshotArray)")
+                //Map to JSON
+
+                //let orders = try? JSONDecoder().decode([Company].self, from: snapshot)
+                print("Snapshot: \(snapshot)")
+
             } else {
                 print("Error creating snapshotArray: \(String(describing: error))")
             }
