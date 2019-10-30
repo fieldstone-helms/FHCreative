@@ -181,7 +181,6 @@ struct companyView : View {
     func updateCompany(){
         //Input the profile information into the fields
         session.getCompany(collectionReference: "company", documentReference: session.session!.uid)
-        
         companyName = session.company?.companyName ?? ""
         companyTel = session.company?.companyTel ?? ""
         companyEmail = session.company?.companyEmail ?? ""
