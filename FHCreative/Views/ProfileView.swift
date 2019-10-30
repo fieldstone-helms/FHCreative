@@ -6,6 +6,52 @@
 
 import SwiftUI
 
+struct profileTabView : View {
+    
+    @State var selection = 0
+    
+    var body : some View {
+        
+        TabView (selection: $selection) {
+            //View public profiles of people your connected to
+            createProfileView()
+                .tabItem {
+                    VStack {
+                        Image(systemName: "person")
+                        Text("Profile")
+                    }
+            }.tag(0)
+            //View public profiles of people your connected to
+            companyView()
+                .tabItem {
+                    VStack {
+                        Image(systemName: "person")
+                        Text("Company")
+                    }            }.tag(1)
+            industryView()
+                .tabItem {
+                    VStack {
+                        Image(systemName: "person")
+                        Text("Industry")
+                    }            }.tag(2)
+            
+            skillsView()
+                .tabItem {
+                    VStack {
+                        Image(systemName: "person")
+                        Text("Skills")
+                    }            }.tag(3)
+            //View users private profile - should link to profiles page
+            settingsView()
+                .tabItem {
+                    VStack {
+                        Image(systemName: "person")
+                        Text("Settings")
+                    }            }.tag(4)
+        }.background(Color("FHDusk"))
+    }
+}
+
 struct createProfileView : View {
     
     @EnvironmentObject var session : SessionStore
@@ -26,7 +72,7 @@ struct createProfileView : View {
     func isEnabled ()-> Bool {
         return !firstname.isEmpty && !lastname.isEmpty && !cellphone.isEmpty && !town.isEmpty && !country.isEmpty
     }
-
+    
     func createProfile() {
         
         dob = convertDateToDouble(getDate: dateOfBirth)
@@ -62,7 +108,9 @@ struct createProfileView : View {
             ZStack {
                 
                 Background(startColor: Color("FHDusk"), endColor: Color("FHCoral"))
+                
                 ScrollView {
+                    
                     VStack {
                         
                         VStack {
@@ -93,29 +141,108 @@ struct createProfileView : View {
                                 self.createProfile()
                             }){
                                 BlueButton(buttonLabel: "Save", condition: isEnabled() )
-                            }
+                            }.disabled(!isEnabled())
                         }.onAppear(perform: updateProfile).frame(width:340)
                     }
                 }
-            }
+            }.edgesIgnoringSafeArea(.all)
         }
     }
 }
 
-struct industryView : View {
+struct companyView : View {
+    
+    @EnvironmentObject var session : SessionStore
+    
     @State var companyName : String = ""
     @State var companyTel : String = ""
     @State var companyEmail : String = ""
     @State var companyTown : String = ""
+    @State var companyCity : String = ""
     @State var companyCountry : String = ""
+    @State var date : Double = 0
+    @State var addedOnDate = Date()
+    
+    func isEnabled ()-> Bool {
+        return !companyName.isEmpty && !companyTel.isEmpty && !companyEmail.isEmpty && !companyTown.isEmpty && !companyCity.isEmpty && !companyCountry.isEmpty
+    }
+        
+    func addCompany() {
+        
+        date = convertDateToDouble(getDate: Date())
+                
+        let params : [String:Any] = ["companyName" : companyName, "companyTel" : companyTel, "companyEmail" : companyEmail, "companyCity": companyCity, "companyTown" : companyTown, "companyCountry" : companyCountry, "dateAdded" : date]
+        
+        session.addData(params: params, collectionReference: "company", documentReference: session.session?.uid ?? "")
+        
+        defaults.set(true, forKey: "hasProfile")
+    }
+    
+    func updateCompany(){
+        //Input the profile information into the fields
+        session.getCompany(collectionReference: "company", documentReference: session.session!.uid)
+        
+        companyName = session.company?.companyName ?? ""
+        companyTel = session.company?.companyTel ?? ""
+        companyEmail = session.company?.companyEmail ?? ""
+        companyTown = session.company?.companyTown ?? ""
+        companyCity = session.company?.companyCity ?? ""
+        companyCountry = session.company?.companyCountry ?? ""
+        addedOnDate = convertDoubleToDate(dateAsDouble: date)
+    }
+    
     var body: some View {
+        
         ScrollView {
+            
             ZStack {
                 Background(startColor: Color("FHDusk"), endColor: Color("FHCoral"))
                 VStack {
                     //Profile image icon
                     Image("CompanyLogo").resizable().aspectRatio(contentMode: .fill).frame(width: 120, height: 120).padding(24)
+                    
+                    Text("Company View").font(.title)
                     //Text fields
+                    CustomTextField(systemImageName: "flag", textLabel: "company name", inputText: $companyName)
+                    CustomTextField(systemImageName: "person", textLabel: "company tel no.", inputText: $companyTel)
+                    CustomTextField(systemImageName: "phone", textLabel: "work email", inputText: $companyEmail)
+                    CustomTextField(systemImageName: "pin", textLabel: "town", inputText: $companyTown)
+                    CustomTextField(systemImageName: "pin", textLabel: "ciy", inputText: $companyCity)
+                    CustomTextField(systemImageName: "map", textLabel: "country", inputText: $companyCountry)
+                    
+                    Button(action:{
+                        self.addCompany()
+                    }){
+                        BlueButton(buttonLabel: "Save", condition: isEnabled() )
+                    }.disabled(!isEnabled())
+                    
+                }.frame(width: 340)
+            }.edgesIgnoringSafeArea(.all)
+        }
+    }
+}
+
+struct industryView : View {
+    
+    @State var companyName : String = ""
+    @State var companyTel : String = ""
+    @State var companyEmail : String = ""
+    @State var companyTown : String = ""
+    @State var companyCountry : String = ""
+    
+    var body: some View {
+        
+        ScrollView {
+            
+            ZStack {
+                
+                Background(startColor: Color("FHDusk"), endColor: Color("FHCoral"))
+                VStack {
+                    //Profile image icon
+                    Image("CompanyLogo").resizable().aspectRatio(contentMode: .fill).frame(width: 120, height: 120).padding(24)
+                    //Text fields
+                    Text("Industry View").font(.title)
+                    
                     CustomTextField(systemImageName: "flag", textLabel: "company name", inputText: $companyName)
                     CustomTextField(systemImageName: "person", textLabel: "company tel no.", inputText: $companyTel)
                     CustomTextField(systemImageName: "phone", textLabel: "work email", inputText: $companyEmail)
@@ -131,18 +258,25 @@ struct industryView : View {
 }
 
 struct skillsView : View {
+    
     @State var companyName : String = ""
     @State var companyTel : String = ""
     @State var companyEmail : String = ""
     @State var companyTown : String = ""
     @State var companyCountry : String = ""
+    
     var body: some View {
+        
         ScrollView {
+            
             ZStack {
                 Background(startColor: Color("FHDusk"), endColor: Color("FHCoral"))
                 VStack {
                     //Profile image icon
                     Image("CompanyLogo").resizable().aspectRatio(contentMode: .fill).frame(width: 120, height: 120).padding(24)
+                    
+                    Text("Skills View").font(.title)
+                    
                     //Text fields
                     CustomTextField(systemImageName: "flag", textLabel: "company name", inputText: $companyName)
                     CustomTextField(systemImageName: "person", textLabel: "tel no.", inputText: $companyTel)
@@ -159,18 +293,28 @@ struct skillsView : View {
 }
 
 struct settingsView : View {
+    
     @State var companyName : String = ""
     @State var companyTel : String = ""
     @State var companyEmail : String = ""
     @State var companyTown : String = ""
     @State var companyCountry : String = ""
+    
     var body: some View {
+        
         ScrollView {
+            
             ZStack {
+                
                 Background(startColor: Color("FHDusk"), endColor: Color("FHCoral"))
+                
                 VStack {
+                    
                     //Profile image icon
                     Image("CompanyLogo").resizable().aspectRatio(contentMode: .fill).frame(width: 120, height: 120).padding(24)
+                    
+                    Text("Settings View").font(.title)
+                    
                     //Text fields
                     CustomTextField(systemImageName: "flag", textLabel: "company name", inputText: $companyName)
                     CustomTextField(systemImageName: "person", textLabel: "tel no.", inputText: $companyTel)
@@ -188,12 +332,12 @@ struct settingsView : View {
 
 struct ProfileView: View {
     var body: some View {
-        createProfileView()
+        profileTabView()
     }
 }
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileView()
+        profileTabView()
     }
 }

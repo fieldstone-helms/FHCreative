@@ -42,7 +42,7 @@ struct landingView: View {
     @State var profileIsEmpty = true
     
     func signOut() {
-        session.signOut()
+        print("\(String(describing: session.signOut))")
     }
     var body: some View {
         
@@ -229,7 +229,7 @@ struct myPageView : View {
     @EnvironmentObject var session: SessionStore
     
     func signOut() {
-        session.signOut()
+        print("\(String(describing: session.signOut))")
     }
     
     var body : some View {

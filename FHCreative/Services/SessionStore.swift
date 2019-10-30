@@ -174,7 +174,7 @@ class SessionStore : ObservableObject {
                 //Map to JSON
 
                 //let orders = try? JSONDecoder().decode([Company].self, from: snapshot)
-                print("Snapshot: \(snapshot)")
+                print("Snapshot: \(String(describing: snapshot))")
 
             } else {
                 print("Error creating snapshotArray: \(String(describing: error))")

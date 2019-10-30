@@ -10,7 +10,6 @@
 		4A7FCA3DC7099D140EFE4384 /* Pods_FHCreativeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54C905105FE6F41325904B78 /* Pods_FHCreativeTests.framework */; };
 		75B1F94C653E3048FE7B82BE /* Pods_FHCreative_FHCreativeUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB12CD5B36153E89EF254B36 /* Pods_FHCreative_FHCreativeUITests.framework */; };
 		841AC6BD235EEBDC00E7F1F6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 841AC6BC235EEBDC00E7F1F6 /* GoogleService-Info.plist */; };
-		841C2A582362FC2F0032E0AA /* ContentViewEG.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841C2A572362FC2F0032E0AA /* ContentViewEG.swift */; };
 		8453E1052362D466004DC4FA /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8453E1042362D466004DC4FA /* Company.swift */; };
 		8453E1072362D537004DC4FA /* Variables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8453E1062362D537004DC4FA /* Variables.swift */; };
 		8457ECC2235EE578003116AA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8457ECC1235EE578003116AA /* AppDelegate.swift */; };
@@ -62,7 +61,6 @@
 		70F06AB7EDAE958B3BD9C960 /* Pods-FHCreativeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FHCreativeTests.release.xcconfig"; path = "Target Support Files/Pods-FHCreativeTests/Pods-FHCreativeTests.release.xcconfig"; sourceTree = "<group>"; };
 		7988FDFD6834EA08A13EEBBA /* Pods-FHCreative.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FHCreative.debug.xcconfig"; path = "Target Support Files/Pods-FHCreative/Pods-FHCreative.debug.xcconfig"; sourceTree = "<group>"; };
 		841AC6BC235EEBDC00E7F1F6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		841C2A572362FC2F0032E0AA /* ContentViewEG.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ContentViewEG.swift; path = "/Users/admin/Documents/Dev/FH Freelance App/FHCreative/FHCreative/Views/ContentViewEG.swift"; sourceTree = "<absolute>"; };
 		8453E1042362D466004DC4FA /* Company.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
 		8453E1062362D537004DC4FA /* Variables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Variables.swift; sourceTree = "<group>"; };
 		8457ECBE235EE578003116AA /* FHCreative.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FHCreative.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -207,7 +205,6 @@
 		84D3923F235EEDA700CBB342 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				841C2A572362FC2F0032E0AA /* ContentViewEG.swift */,
 				84D39242235EEDA700CBB342 /* AppView.swift */,
 				84DCA674235F2DB200DDDC2C /* AuthView.swift */,
 				8490D00623602D2600F75DFF /* ProfileView.swift */,
@@ -546,7 +543,6 @@
 				8453E1072362D537004DC4FA /* Variables.swift in Sources */,
 				8457ECC2235EE578003116AA /* AppDelegate.swift in Sources */,
 				84ED5ED023604BAC00E5EE41 /* UserProfile.swift in Sources */,
-				841C2A582362FC2F0032E0AA /* ContentViewEG.swift in Sources */,
 				8457ECC4235EE578003116AA /* SceneDelegate.swift in Sources */,
 				84D3923E235EED9100CBB342 /* CustomViews.swift in Sources */,
 				84D39250235EEDA800CBB342 /* OnboardingSubview.swift in Sources */,
@@ -759,7 +755,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = FHCreativeTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -781,7 +777,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = FHCreativeTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
